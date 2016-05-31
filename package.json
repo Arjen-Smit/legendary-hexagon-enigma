@@ -17,6 +17,9 @@
   },
   "homepage": "https://github.com/Arjen-Smit/legendary-hexagon-enigma#readme",
   "dependencies": {
+    "gulp": "^3.9.1",
+    "gulp-include": "^2.2.1",
+    "gulp-uglify": "^1.5.3",
     "three": "^0.77.1"
   }
 }

@@ -10,3 +10,9 @@ npm install
 npm install http-server -g
 http-server
 ```
+
+## To Build
+```
+npm install gulp -g
+gulp
+```
