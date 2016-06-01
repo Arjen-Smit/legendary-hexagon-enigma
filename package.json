@@ -12,14 +12,19 @@
   },
   "author": "Arjen Smit",
   "license": "MIT",
+  "scripts": {
+    "start": "wzrd hexagon.js"
+  },
   "bugs": {
     "url": "https://github.com/Arjen-Smit/legendary-hexagon-enigma/issues"
   },
   "homepage": "https://github.com/Arjen-Smit/legendary-hexagon-enigma#readme",
   "dependencies": {
-    "gulp": "^3.9.1",
-    "gulp-include": "^2.2.1",
-    "gulp-uglify": "^1.5.3",
-    "three": "^0.77.1"
+    "browserify": "^13.0.1",
+    "canvas-testbed": "^1.0.4",
+    "scriptjs": "^2.5.8",
+    "three": "^0.77.1",
+    "three-orbit-controls": "^72.0.0",
+    "wzrd": "^1.3.1"
   }
 }
