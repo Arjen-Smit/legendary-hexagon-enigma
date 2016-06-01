@@ -9,9 +9,9 @@ createApp(render, start, {
 })
 
 var renderer,
-    scene,
-    camera,
-    controls
+        scene,
+        camera,
+        controls
 
 function start(gl, width, height) {
     renderer = new THREE.WebGLRenderer({
@@ -21,19 +21,22 @@ function start(gl, width, height) {
 
     scene = new THREE.Scene()
 
-    // camera = new THREE.OrthographicCamera( 1 / - 2, 1 / 2, 1 / 2, 1 / - 2, 1, 1000 )
-    // camera.position.set(0, 0, -1)
-
-    camera = new THREE.PerspectiveCamera(50, width/height, 1, 1000)
+    camera = new THREE.PerspectiveCamera(50, width / height, 1, 1000)
     camera.position.set(0, 50, -20)
     camera.lookAt(new THREE.Vector3())
 
+    var dirLight = new THREE.DirectionalLight(0xffffff, 0.125);
+    dirLight.position.set(0, 0, 1).normalize();
+    scene.add(dirLight);
+
+    var pointLight = new THREE.PointLight(0xffffff, 1.5);
+    pointLight.position.set(0, 100, 90);
+    scene.add(pointLight);
+
     controls = new OrbitControls(camera)
 
-
-
-    var geo = new THREE.CylinderGeometry( 5, 5, 1, 6 )
-    var mat = new THREE.MeshBasicMaterial({ wireframe: false, color: 0x5baad7 })
+    var geo = new THREE.CylinderGeometry(5, 5, 1, 6)
+    var mat = new THREE.MeshPhongMaterial({color: 0x5baad7})
     var box = new THREE.Mesh(geo, mat)
     scene.add(box)
 }
@@ -47,6 +50,6 @@ function resize(width, height) {
         return
 
     renderer.setViewport(0, 0, width, height)
-    camera.aspect = width/height
+    camera.aspect = width / height
     camera.updateProjectionMatrix()
 }
