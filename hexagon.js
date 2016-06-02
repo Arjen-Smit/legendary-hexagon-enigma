@@ -1,7 +1,7 @@
 var createApp = require('canvas-testbed')
 
 var THREE = require('three')
-var OrbitControls = require('three-orbit-controls')(THREE)
+var OrbitControls = require('three-orbit-controls')(THREE);
 
 createApp(render, start, {
     context: 'webgl',
@@ -11,7 +11,8 @@ createApp(render, start, {
 var renderer,
         scene,
         camera,
-        controls
+        controls,
+        pointLight;
 
 function start(gl, width, height) {
     renderer = new THREE.WebGLRenderer({
@@ -21,12 +22,12 @@ function start(gl, width, height) {
 
     scene = new THREE.Scene()
 
-    camera = new THREE.PerspectiveCamera(50, width / height, 1, 1000)
-    camera.position.set(0, 50, 20)
+    camera = new THREE.PerspectiveCamera(75, width / height, .1, 1000)
+    camera.position.z = 30
     camera.lookAt(new THREE.Vector3())
 
     var dirLight = new THREE.DirectionalLight(0xffffff, 0.125);
-    dirLight.position.set(0, 0, 1).normalize();
+    dirLight.position.set(0, 0, 100).normalize();
     scene.add(dirLight);
 
     var pointLight = new THREE.PointLight(0xffffff, 1.5);
@@ -34,40 +35,53 @@ function start(gl, width, height) {
     scene.add(pointLight);
 
     controls = new OrbitControls(camera)
+    addGrid();
+    addField();
+}
 
-    var planeW = 50; // pixels
-    var planeH = 50; // pixels
-    var numW = 50; // how many wide (50*50 = 2500 pixels wide)
-    var numH = 50; // how many tall (50*50 = 2500 pixels tall)
-    var plane = new THREE.Mesh(
-        new THREE.PlaneGeometry( planeW*numW, planeH*numH, planeW, planeH ),
-        new THREE.MeshBasicMaterial( {
-            color: 0xffffff,
-            wireframe: true
-        } )
-    );
-
-    scene.add(plane);
-
-
-    // var geo = new THREE.CircleGeometry(5, 6);
-    // var mat = new THREE.MeshBasicMaterial({color: 0x5baad7});
-    // var circle = new THREE.Mesh(geo, mat);
-    //
-    // scene.add(circle);
-
-
-
+function addField() {
+    var lines = 10;
+    var grid = [];
 
     var geo = new THREE.CylinderGeometry(5, 5, .5, 6)
-    var mat = new THREE.MeshPhongMaterial({color: 0x5baad7})
-    var box = new THREE.Mesh(geo, mat)
-    box.position.set(0, 0, 0);
+    var mat = new THREE.MeshPhongMaterial({color: 0x5baad7,  shading: THREE.FlatShading})
+    var rot = new THREE.Euler( 0, 1, 1.57, 'XYZ' );;
+
+    for (var l=4;l<=10;l++) {
+        for (var i=1; i<=l; i++) {
+            var box = new THREE.Mesh(geo, mat)
+
+            box.position.setX((l * 8));
+            box.position.setY((i * 9) - (l * 4.5) );
+            box.rotateX(1.57);
+            box.rotateY(1.57);
+            scene.add(box);
+
+            var mat = new THREE.MeshPhongMaterial({color: 0xffaad7,  shading: THREE.FlatShading})
+        }
+    }
+
+    scene.add(box);
+}
+
+function addGrid() {
+    var planeW = 50; // pixels
+    var planeH = 50; // pixels
+    var numW = 5; // how many wide (50*50 = 2500 pixels wide)
+    var numH = 5; // how many tall (50*50 = 2500 pixels tall)
+    var plane = new THREE.Mesh(
+        new THREE.PlaneGeometry( planeW*numW, planeH*numH, planeW, planeH ),
+        new THREE.MeshBasicMaterial({
+            color: 0xffffff,
+            wireframe: true
+        })
+  );
+
+  scene.add(plane);
 }
 
 function render(gl, width, height) {
     renderer.render(scene, camera)
-    console.log(camera.position);
 }
 
 function resize(width, height) {
