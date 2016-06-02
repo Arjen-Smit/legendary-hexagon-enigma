@@ -22,7 +22,7 @@ function start(gl, width, height) {
     scene = new THREE.Scene()
 
     camera = new THREE.PerspectiveCamera(50, width / height, 1, 1000)
-    camera.position.set(0, 50, -20)
+    camera.position.set(0, 50, 20)
     camera.lookAt(new THREE.Vector3())
 
     var dirLight = new THREE.DirectionalLight(0xffffff, 0.125);
@@ -35,14 +35,39 @@ function start(gl, width, height) {
 
     controls = new OrbitControls(camera)
 
-    var geo = new THREE.CylinderGeometry(5, 5, 1, 6)
+    var planeW = 50; // pixels
+    var planeH = 50; // pixels
+    var numW = 50; // how many wide (50*50 = 2500 pixels wide)
+    var numH = 50; // how many tall (50*50 = 2500 pixels tall)
+    var plane = new THREE.Mesh(
+        new THREE.PlaneGeometry( planeW*numW, planeH*numH, planeW, planeH ),
+        new THREE.MeshBasicMaterial( {
+            color: 0xffffff,
+            wireframe: true
+        } )
+    );
+
+    scene.add(plane);
+
+
+    // var geo = new THREE.CircleGeometry(5, 6);
+    // var mat = new THREE.MeshBasicMaterial({color: 0x5baad7});
+    // var circle = new THREE.Mesh(geo, mat);
+    //
+    // scene.add(circle);
+
+
+
+
+    var geo = new THREE.CylinderGeometry(5, 5, .5, 6)
     var mat = new THREE.MeshPhongMaterial({color: 0x5baad7})
     var box = new THREE.Mesh(geo, mat)
-    scene.add(box)
+    box.position.set(0, 0, 0);
 }
 
 function render(gl, width, height) {
     renderer.render(scene, camera)
+    console.log(camera.position);
 }
 
 function resize(width, height) {
