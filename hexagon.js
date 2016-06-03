@@ -11,8 +11,7 @@ createApp(render, start, {
 var renderer,
         scene,
         camera,
-        controls,
-        pointLight;
+        controls;
 
 function start(gl, width, height) {
     renderer = new THREE.WebGLRenderer({
@@ -23,7 +22,7 @@ function start(gl, width, height) {
     scene = new THREE.Scene()
 
     camera = new THREE.PerspectiveCamera(75, width / height, .1, 1000)
-    camera.position.z = 30
+    camera.position.z = 90
     camera.lookAt(new THREE.Vector3())
 
     var dirLight = new THREE.DirectionalLight(0xffffff, 0.125);
@@ -40,18 +39,31 @@ function start(gl, width, height) {
 }
 
 function addField() {
-    var lines = 10;
+    var lines = 5;
     var grid = [];
 
     var geo = new THREE.CylinderGeometry(5, 5, .5, 6)
     var mat = new THREE.MeshPhongMaterial({color: 0x5baad7,  shading: THREE.FlatShading})
-    var rot = new THREE.Euler( 0, 1, 1.57, 'XYZ' );;
 
-    for (var l=4;l<=10;l++) {
+    for (var l=lines;l<=lines+lines-1;l++) {
         for (var i=1; i<=l; i++) {
             var box = new THREE.Mesh(geo, mat)
 
             box.position.setX((l * 8));
+            box.position.setY((i * 9) - (l * 4.5) );
+            box.rotateX(1.57);
+            box.rotateY(1.57);
+            scene.add(box);
+
+            var mat = new THREE.MeshPhongMaterial({color: 0xffaad7,  shading: THREE.FlatShading})
+        }
+    }
+
+    for (var l=lines+lines-2; l>= lines; l--) {
+        for (var i=1; i<=l; i++) {
+            var box = new THREE.Mesh(geo, mat)
+
+            box.position.setX((lines * 8) - (l * 8));
             box.position.setY((i * 9) - (l * 4.5) );
             box.rotateX(1.57);
             box.rotateY(1.57);
